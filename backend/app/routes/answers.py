@@ -1,16 +1,18 @@
 from fastapi import APIRouter
 
-from app.core.deps import SessionDep
-from app.data_models.answers_model import AnswerCreate, Answer, AnswerOutConfirm
+from app.deps import CurrentAnswerDep, SessionDep
+from app.model_data import Message, Answer
 
 app_answers = APIRouter(prefix="/answers")
 
 
 @app_answers.get("/{answer_id}")
-def get_id_answer(answer_id: int, session: SessionDep) -> Answer:
-    pass
+def get_id_answer(current_nswer: CurrentAnswerDep) -> Answer:
+    return Answer.model_validate(current_nswer)
 
 
 @app_answers.delete("/{answer_id}")
-def delete_id_answer(answer_id: int, session: SessionDep) -> AnswerOutConfirm:
-    pass
+def delete_id_answer(session: SessionDep, current_answer: CurrentAnswerDep) -> Message:
+    session.delete(current_answer)
+    session.commit()
+    return Message(message="Answer was successfully deleted")
