@@ -1,9 +1,12 @@
 services:
-  small-backend:
-    build: ./app/
+  backend:
+    build: ./backend/
     image: small-back:latest
-  networks:
-    - small-db
+    networks:
+      - small-db
+    ports:
+      - "8000:8000"
+    command: tail -F /dev/null
 
 #   db:
 #     image: postges:17.6-alpine3.22
@@ -22,4 +25,3 @@ services:
 
 networks:
   small-db:
-    name: small-db

@@ -1,3 +1,4 @@
 __pycache__
 
-flake.{nix,lock}
+flake.lock
+flake.nix
