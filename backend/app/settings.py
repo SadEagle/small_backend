@@ -9,6 +9,7 @@ class RunMode(StrEnum):
     TEST = "test"
 
 
+# TODO: make proper settings with .env file pinned inside
 class Settings(BaseSettings):
     # TODO: add .env file
     # model_config = SettingsConfigDict(
@@ -16,10 +17,11 @@ class Settings(BaseSettings):
     #     extra="ignore",
     # )
 
-    PROD_DB_URL = "sqlite:///:memory:"
-    DEV_DB_URL = "sqlite:///:memory:"
-    TEST_DB_URL = "sqlite:///:memory:"
     RUN_MODE: RunMode = RunMode.DEV
+    # PROD_DB_URL: str = "sqlite:///:memory:"
+    # DEV_DB_URL: str = "sqlite:///:memory:"
+    DEV_DB_URL: str = "sqlite:///test.db"
+    TEST_DB_URL: str = "sqlite:///test.db"
 
 
 settings = Settings()

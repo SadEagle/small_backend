@@ -2,13 +2,13 @@ from datetime import datetime
 
 from pydantic import BaseModel, TypeAdapter
 
-# TODO: check if needed
-# ListQuestion = TypeAdapter[list["Question"]]
+TupleQuestions = TypeAdapter(tuple["Question", ...])
+TupleAnswers = TypeAdapter(tuple["Answer", ...])
 
 
 class AnswerCreate(BaseModel):
     text: str
-    question_id: str
+    user_id: str
 
 
 class Answer(AnswerCreate):
@@ -27,7 +27,7 @@ class Question(QuestionCreate):
 
 class QuestionWithAnswers(BaseModel):
     question: Question
-    answers: list[Answer]
+    answers: tuple[Answer, ...]
 
 
 class Message(BaseModel):

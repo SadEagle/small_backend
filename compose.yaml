@@ -6,7 +6,6 @@ services:
       - small-db
     ports:
       - "8000:8000"
-    command: tail -F /dev/null
 
 #   db:
 #     image: postges:17.6-alpine3.22

@@ -1,5 +1,5 @@
 from typing import Annotated, TypeAlias, Generator
-from fastapi import Depends
+from fastapi import Depends, HTTPException, status
 from sqlalchemy.orm import Session
 from sqlalchemy import select
 
@@ -15,26 +15,27 @@ def create_session() -> Generator[Session, None, None]:
 SessionDep: TypeAlias = Annotated[Session, Depends(create_session)]
 
 
-# TODO: Delete n+1 problem by adding extra select with special type
-def get_answer_db(session: SessionDep, answer_id: int) -> AnswerDB | None:
+def get_answer_db(session: SessionDep, answer_id: int) -> AnswerDB:
     statement = select(AnswerDB).where(AnswerDB.id == answer_id)
-    session_user = session.execute(statement).one_or_none()
+    session_user = session.execute(statement).scalar()
     if session_user is None:
-        return None
-    return session_user.scalar()
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND, detail="Answer wasn't found"
+        )
+    return session_user
 
 
 CurrentAnswerDep: TypeAlias = Annotated[AnswerDB, Depends(get_answer_db)]
 
 
-# WARN: inproper realization, need aware of n+1
-# TODO: add correct loading, need to be aware of n+1 trouble!!!!!
-# def get_question_db(session: SessionDep, question_id) -> QuestionDB | None:
-#     statement = select(QuestionDB).where(QuestionDB.id == question_id)
-#     session_question = session.execute(statement).one_or_none()
-#     if session_question is None:
-#         return None
-#     return session_question.scalar()
-#
-#
-# CurrentQuestionDep: TypeAlias = Annotated[AnswerDB, Depends(get_question_db)]
+def get_question_db(session: SessionDep, question_id: int) -> QuestionDB:
+    statement = select(QuestionDB).where(QuestionDB.id == question_id)
+    session_question = session.execute(statement).scalar()
+    if session_question is None:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND, detail="Question wasn't found"
+        )
+    return session_question
+
+
+CurrentQuestionDep: TypeAlias = Annotated[QuestionDB, Depends(get_question_db)]

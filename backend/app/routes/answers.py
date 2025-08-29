@@ -7,8 +7,8 @@ app_answers = APIRouter(prefix="/answers")
 
 
 @app_answers.get("/{answer_id}")
-def get_id_answer(current_nswer: CurrentAnswerDep) -> Answer:
-    return Answer.model_validate(current_nswer)
+def get_id_answer(current_answer: CurrentAnswerDep) -> Answer:
+    return Answer.model_validate(current_answer, from_attributes=True)
 
 
 @app_answers.delete("/{answer_id}")
