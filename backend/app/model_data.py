@@ -13,6 +13,7 @@ class AnswerCreate(BaseModel):
 
 class Answer(AnswerCreate):
     id: int
+    question_id: int
     created_at: datetime
 
 
@@ -22,7 +23,7 @@ class QuestionCreate(BaseModel):
 
 class Question(QuestionCreate):
     id: int
-    create_at: datetime
+    created_at: datetime
 
 
 class QuestionWithAnswers(BaseModel):
@@ -32,3 +33,7 @@ class QuestionWithAnswers(BaseModel):
 
 class Message(BaseModel):
     message: str
+
+
+# https://docs.pydantic.dev/2.11/errors/usage_errors/#class-not-fully-defined
+TupleAnswers.rebuild()

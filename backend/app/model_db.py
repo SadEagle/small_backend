@@ -13,7 +13,7 @@ class QuestionDB(Base):
 
     id: Mapped[int] = mapped_column(primary_key=True)
     text: Mapped[str]
-    create_at: Mapped[datetime] = mapped_column(server_default=func.now())
+    created_at: Mapped[datetime] = mapped_column(server_default=func.now())
 
     # TODO: recheck cascade one more time
     # https://docs.sqlalchemy.org/en/14/orm/cascades.html
@@ -22,7 +22,9 @@ class QuestionDB(Base):
     )
 
     def __repr__(self) -> str:
-        return f"Question(id={self.id}, text='{self.text}', create_at={self.create_at})"
+        return (
+            f"QuestionDB(id={self.id}, text='{self.text}', create_at={self.create_at})"
+        )
 
 
 class AnswerDB(Base):
@@ -31,10 +33,10 @@ class AnswerDB(Base):
     id: Mapped[int] = mapped_column(primary_key=True)
     text: Mapped[str]
     user_id: Mapped[str]
-    create_at: Mapped[datetime] = mapped_column(server_default=func.now())
+    created_at: Mapped[datetime] = mapped_column(server_default=func.now())
 
     question_id: Mapped[int] = mapped_column(ForeignKey("question.id"))
     question: Mapped[QuestionDB] = relationship(back_populates="answers")
 
     def __repr__(self) -> str:
-        return f"Answer(id={self.id}, text='{self.text}', create_at={self.create_at})"
+        return f"AnswerDB(id={self.id}, text='{self.text}', user_id='{self.user_id}', create_at={self.create_at}, question_id={self.question_id})"

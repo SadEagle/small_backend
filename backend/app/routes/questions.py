@@ -32,7 +32,6 @@ def get_question_with_answers(
     session: SessionDep, current_question: CurrentQuestionDep
 ) -> QuestionWithAnswers:
     answers_tuple = get_question_answers_db(session, current_question.id)
-
     question = Question.model_validate(current_question, from_attributes=True)
     answers = TupleAnswers.validate_python(answers_tuple, from_attributes=True)
     return QuestionWithAnswers(question=question, answers=answers)
