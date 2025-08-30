@@ -35,5 +35,5 @@ def is_user_answered_question_db(
         .where(AnswerDB.question_id == question_id)
         .where(AnswerDB.user_id == user_id)
     )
-    current_user_answer = session.execute(statement).one_or_none()
+    current_user_answer = session.scalar(statement)
     return current_user_answer is not None

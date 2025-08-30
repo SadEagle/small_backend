@@ -2,10 +2,12 @@ from datetime import datetime
 
 from pydantic import BaseModel, TypeAdapter
 
+
 TupleQuestions = TypeAdapter(tuple["Question", ...])
 TupleAnswers = TypeAdapter(tuple["Answer", ...])
 
 
+# TODO: what kind of validation do I need?! Task expects to check if str isn't empty. But... I have no boundaries for those fields int the same task. If everyone will set up it's own boundaries it will be such a mess...
 class AnswerCreate(BaseModel):
     text: str
     user_id: str
@@ -35,5 +37,6 @@ class Message(BaseModel):
     message: str
 
 
+# Need if TupleAnswer was defined before inner classes
 # https://docs.pydantic.dev/2.11/errors/usage_errors/#class-not-fully-defined
 TupleAnswers.rebuild()

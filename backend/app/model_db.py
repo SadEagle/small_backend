@@ -14,9 +14,6 @@ class QuestionDB(Base):
     id: Mapped[int] = mapped_column(primary_key=True)
     text: Mapped[str]
     created_at: Mapped[datetime] = mapped_column(server_default=func.now())
-
-    # TODO: recheck cascade one more time
-    # https://docs.sqlalchemy.org/en/14/orm/cascades.html
     answers: Mapped[list["AnswerDB"]] = relationship(
         back_populates="question", cascade="all, delete-orphan"
     )
