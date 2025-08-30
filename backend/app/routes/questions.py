@@ -1,10 +1,6 @@
 from fastapi import APIRouter, HTTPException, status
 
-from app.crud import (
-    get_all_questions_db,
-    get_question_answers_db,
-    is_user_answered_question_db,
-)
+from app import crud
 from app.deps import CurrentQuestionDep, SessionDep
 from app.model_data import (
     AnswerCreate,
@@ -15,7 +11,6 @@ from app.model_data import (
     TupleQuestions,
     Message,
 )
-from app.model_db import QuestionDB, AnswerDB
 
 
 app_questions = APIRouter(prefix="/questions")
@@ -23,7 +18,7 @@ app_questions = APIRouter(prefix="/questions")
 
 @app_questions.get("/")
 def get_all_questions(session: SessionDep) -> tuple[Question, ...]:
-    questions_list = get_all_questions_db(session)
+    questions_list = crud.get_all_questions_db(session)
     return TupleQuestions.validate_python(questions_list, from_attributes=True)
 
 
@@ -31,29 +26,26 @@ def get_all_questions(session: SessionDep) -> tuple[Question, ...]:
 def get_question_with_answers(
     session: SessionDep, current_question: CurrentQuestionDep
 ) -> QuestionWithAnswers:
-    answers_tuple = get_question_answers_db(session, current_question.id)
+    answers_tuple = crud.get_question_with_answers_db(session, current_question.id)
     question = Question.model_validate(current_question, from_attributes=True)
     answers = TupleAnswers.validate_python(answers_tuple, from_attributes=True)
     return QuestionWithAnswers(question=question, answers=answers)
 
 
 @app_questions.post("/{question_id}", status_code=status.HTTP_201_CREATED)
-def create_questions(
+def create_question(
     session: SessionDep,
     question: QuestionCreate,
 ) -> Message:
-    question_dict = question.model_dump(mode="json")
-    session.add(QuestionDB(**question_dict))
-    session.commit()
+    crud.create_question_db(session, question)
     return Message(message="Question was succesfully created")
 
 
 @app_questions.delete("/{question_id}")
-def delete_id_question(
+def delete_question(
     session: SessionDep, current_question: CurrentQuestionDep
 ) -> Message:
-    session.delete(current_question)
-    session.commit()
+    crud.delete_question_db(session, current_question)
     return Message(message="Question was succesfully deleted")
 
 
@@ -66,13 +58,12 @@ def create_answer_id_question(
     target_question: CurrentQuestionDep,
     answer_create: AnswerCreate,
 ) -> Message:
-    if is_user_answered_question_db(session, answer_create.user_id, target_question.id):
+    if crud.is_user_answered_question_db(
+        session, answer_create.user_id, target_question.id
+    ):
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND,
             detail="Can't create answer. User already answered current question",
         )
-    answer_dict = answer_create.model_dump(mode="json")
-    answer = AnswerDB(**answer_dict)
-    target_question.answers.append(answer)
-    session.commit()
+    crud.create_answer_db(session, answer_create, target_question)
     return Message(message="Answer was succesfully created")

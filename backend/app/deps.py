@@ -7,7 +7,7 @@ from app.model_db import QuestionDB, AnswerDB
 from app.db import engine
 
 
-def create_session() -> Generator[Session, None, None]:
+def create_session() -> Generator[Session]:
     with Session(engine) as session:
         yield session
 
@@ -17,7 +17,7 @@ SessionDep: TypeAlias = Annotated[Session, Depends(create_session)]
 
 def get_answer_db(session: SessionDep, answer_id: int) -> AnswerDB:
     statement = select(AnswerDB).where(AnswerDB.id == answer_id)
-    session_user = session.execute(statement).scalar()
+    session_user = session.scalar(statement)
     if session_user is None:
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND, detail="Answer wasn't found"
@@ -30,7 +30,7 @@ CurrentAnswerDep: TypeAlias = Annotated[AnswerDB, Depends(get_answer_db)]
 
 def get_question_db(session: SessionDep, question_id: int) -> QuestionDB:
     statement = select(QuestionDB).where(QuestionDB.id == question_id)
-    session_question = session.execute(statement).scalar()
+    session_question = session.scalar(statement)
     if session_question is None:
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND, detail="Question wasn't found"

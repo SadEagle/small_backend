@@ -7,7 +7,6 @@ TupleQuestions = TypeAdapter(tuple["Question", ...])
 TupleAnswers = TypeAdapter(tuple["Answer", ...])
 
 
-# TODO: what kind of validation do I need?! Task expects to check if str isn't empty. But... I have no boundaries for those fields int the same task. If everyone will set up it's own boundaries it will be such a mess...
 class AnswerCreate(BaseModel):
     text: str
     user_id: str

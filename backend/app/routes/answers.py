@@ -1,5 +1,6 @@
 from fastapi import APIRouter
 
+from app import crud
 from app.deps import CurrentAnswerDep, SessionDep
 from app.model_data import Message, Answer
 
@@ -7,12 +8,11 @@ app_answers = APIRouter(prefix="/answers")
 
 
 @app_answers.get("/{answer_id}")
-def get_id_answer(current_answer: CurrentAnswerDep) -> Answer:
+def get_answer(current_answer: CurrentAnswerDep) -> Answer:
     return Answer.model_validate(current_answer, from_attributes=True)
 
 
 @app_answers.delete("/{answer_id}")
-def delete_id_answer(session: SessionDep, current_answer: CurrentAnswerDep) -> Message:
-    session.delete(current_answer)
-    session.commit()
+def delete_answer(session: SessionDep, current_answer: CurrentAnswerDep) -> Message:
+    crud.delete_answer_db(session, current_answer)
     return Message(message="Answer was successfully deleted")

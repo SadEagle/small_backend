@@ -1,27 +1,10 @@
-from enum import StrEnum
-
-from pydantic_settings import BaseSettings, SettingsConfigDict
+from pydantic_settings import BaseSettings
 
 
-class RunMode(StrEnum):
-    PROD = "prod"
-    DEV = "dev"
-    TEST = "test"
-
-
-# TODO: make proper settings with .env file pinned inside
+# TODO: generate url as computed field for postgres
+# But... how do i handle test with sqlite then?
 class Settings(BaseSettings):
-    # TODO: add .env file
-    # model_config = SettingsConfigDict(
-    #     env_file=".env",
-    #     extra="ignore",
-    # )
-
-    RUN_MODE: RunMode = RunMode.DEV
-    # PROD_DB_URL: str = "sqlite:///:memory:"
-    # DEV_DB_URL: str = "sqlite:///:memory:"
-    DEV_DB_URL: str = "sqlite:///test.db"
-    TEST_DB_URL: str = "sqlite:///test.db"
+    DB_URL: str = "sqlite:///dev.db"
 
 
 settings = Settings()
