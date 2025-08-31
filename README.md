@@ -5,7 +5,7 @@
 Реализованные составляющие проекта:
 - [x] FastAPI
 - [x] SQLAlchemy ORM + Pydantic
-- [ ] Pytest
+- [x] Pytest
 - [ ] Alembic migrations
 - [ ] Logs
 - [ ] Docker/Compose

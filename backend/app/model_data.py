@@ -36,6 +36,6 @@ class Message(BaseModel):
     message: str
 
 
-# Need if TupleAnswer was defined before inner classes
+# Need if TypeAdapter was defined before inner classes
 # https://docs.pydantic.dev/2.11/errors/usage_errors/#class-not-fully-defined
 TupleAnswers.rebuild()

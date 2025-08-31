@@ -15,7 +15,7 @@ def create_session() -> Generator[Session]:
 SessionDep: TypeAlias = Annotated[Session, Depends(create_session)]
 
 
-# NOTE: Crud operations
+# NOTE: crud operation
 def get_answer_db(session: SessionDep, answer_id: int) -> AnswerDB:
     statement = select(AnswerDB).where(AnswerDB.id == answer_id)
     session_user = session.scalar(statement)
@@ -29,6 +29,7 @@ def get_answer_db(session: SessionDep, answer_id: int) -> AnswerDB:
 CurrentAnswerDep: TypeAlias = Annotated[AnswerDB, Depends(get_answer_db)]
 
 
+# NOTE: crud operation
 def get_question_db(session: SessionDep, question_id: int) -> QuestionDB:
     statement = select(QuestionDB).where(QuestionDB.id == question_id)
     session_question = session.scalar(statement)
