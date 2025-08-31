@@ -7,7 +7,9 @@ from fastapi.testclient import TestClient
 from sqlalchemy.orm import Session
 
 from app.main import app
-from app.deps import engine
+
+from app.db import engine
+from app.model_db import Base
 from app.model_data import AnswerCreate, QuestionCreate
 
 
@@ -19,6 +21,7 @@ def random_lower_string() -> str:
 def session() -> Generator[Session]:
     with Session(engine) as session:
         yield session
+    Base.metadata.drop_all(engine)
 
 
 @pytest.fixture(scope="module")
@@ -26,7 +29,7 @@ def client() -> TestClient:
     return TestClient(app)
 
 
-# NOTE: class objects
+# NOTE: Data fixtures
 @pytest.fixture
 def question_create() -> QuestionCreate:
     return QuestionCreate(text=random_lower_string())

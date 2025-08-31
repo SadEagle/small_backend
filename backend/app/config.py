@@ -5,6 +5,7 @@ from pydantic_settings import BaseSettings
 # But... how do i handle test with sqlite then?
 class Settings(BaseSettings):
     DB_URL: str = "sqlite:///dev.db"
+    TEST_DB_URL: str = "sqlite:///./dev.db"
 
 
 settings = Settings()

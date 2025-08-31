@@ -22,6 +22,15 @@ def get_all_questions(session: SessionDep) -> tuple[Question, ...]:
     return TupleQuestions.validate_python(questions_list, from_attributes=True)
 
 
+@app_questions.post("/", status_code=status.HTTP_201_CREATED)
+def create_question(
+    session: SessionDep,
+    question: QuestionCreate,
+) -> Message:
+    crud.create_question_db(session, question)
+    return Message(message="Question was succesfully created")
+
+
 @app_questions.get("/{question_id}")
 def get_question_with_answers(
     session: SessionDep, current_question: CurrentQuestionDep
@@ -30,15 +39,6 @@ def get_question_with_answers(
     question = Question.model_validate(current_question, from_attributes=True)
     answers = TupleAnswers.validate_python(answers_tuple, from_attributes=True)
     return QuestionWithAnswers(question=question, answers=answers)
-
-
-@app_questions.post("/{question_id}", status_code=status.HTTP_201_CREATED)
-def create_question(
-    session: SessionDep,
-    question: QuestionCreate,
-) -> Message:
-    crud.create_question_db(session, question)
-    return Message(message="Question was succesfully created")
 
 
 @app_questions.delete("/{question_id}")
@@ -53,7 +53,7 @@ def delete_question(
     "/{question_id}/answers",
     status_code=status.HTTP_201_CREATED,
 )
-def create_answer_id_question(
+def create_answer(
     session: SessionDep,
     target_question: CurrentQuestionDep,
     answer_create: AnswerCreate,

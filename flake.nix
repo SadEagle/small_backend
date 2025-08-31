@@ -14,6 +14,7 @@
         with pkgs;
         (python313.withPackages (
           python-pkgs: with python-pkgs; [
+            alembic
             fastapi
             fastapi-cli
             sqlalchemy

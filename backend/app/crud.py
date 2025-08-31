@@ -34,7 +34,6 @@ def delete_answer_db(session: Session, answer: AnswerDB) -> None:
     session.commit()
 
 
-# WARN: slow orm version, bulk will be better if many questions
 def get_all_questions_db(session: Session) -> tuple[QuestionDB, ...]:
     statement = select(QuestionDB)
     questions_tuple = session.scalars(statement).all()

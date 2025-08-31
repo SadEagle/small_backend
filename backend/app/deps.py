@@ -15,6 +15,7 @@ def create_session() -> Generator[Session]:
 SessionDep: TypeAlias = Annotated[Session, Depends(create_session)]
 
 
+# NOTE: Crud operations
 def get_answer_db(session: SessionDep, answer_id: int) -> AnswerDB:
     statement = select(AnswerDB).where(AnswerDB.id == answer_id)
     session_user = session.scalar(statement)
