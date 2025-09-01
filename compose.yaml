@@ -1,25 +1,41 @@
 services:
   backend:
+    # restart: unless-stopped
     build: ./backend/
     image: small-back:latest
+    env_file:
+      - ./.env
     networks:
-      - small-db
+      - small-db-network
     ports:
       - "8000:8000"
-  # db:
-  #   image: docker.io/library/postges:17.6-alpine3.22
-  #   restart: always
-  #   shm_size: 128mb
-  #   volumes:
-  #     - small-back-db::/var/lib/postgresql
-  #   environment:
-  #     POSTGRES_DB: test
-  #     POSTGRES_USER: test
-  #     POSTGRES_PASSWORD: test
+    # depends_on:
+    #   db:
+    #     condition: service_healthy
 
+  db:
+    image: docker.io/library/postgres:17.6-alpine3.22
+    restart: always
+    shm_size: 128mb
+    volumes:
+      - small-db-volume:/var/lib/postgresql
+    env_file:
+      - ./.env
+    networks:
+      - small-db-network
+    healthcheck:
+      test:
+        [
+          "CMD-SHELL",
+          "pg_isready -U ${POSTGRES_USER} -d ${POSTGRES_DB}"
+        ]
+      interval: 10s
+      retries: 5
+      start_period: 30s
+      timeout: 10s
 volumes:
-  db_volume:
-    name: small-db
+  small-db-volume:
+
 
 networks:
-  small-db:
+  small-db-network:

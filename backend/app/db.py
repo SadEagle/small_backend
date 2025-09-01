@@ -9,7 +9,7 @@ from app.config import settings
 if os.getenv("PYTEST_VERSION"):
     engine = create_engine(settings.TEST_DB_URL)
 else:
-    engine = create_engine(settings.DB_URL)
+    engine = create_engine(str(settings.DB_URL))
 
 
 # TODO: add alembic migrations properly
