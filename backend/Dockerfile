@@ -9,12 +9,12 @@ WORKDIR /backend
 # Ref: https://docs.astral.sh/uv/guides/integration/docker/#compiling-bytecode
 ENV UV_COMPILE_BYTECODE=1
 
-COPY ./uv.lock ./pyproject.toml ./
+COPY ./uv.lock ./pyproject.toml ./pyproject.toml ./
 
 RUN uv sync --frozen
 
 COPY ./app ./app
-COPY ./alembic.ini  ./alembic ./
+COPY ./alembic.ini ./
 
 CMD ["uv", "run", "fastapi", "run", "--workers", "4", "./app/main.py"]
 
