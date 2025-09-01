@@ -54,25 +54,25 @@ def test_get_question_with_answers(
     assert question_answers_tuple[0] is answer
 
 
-def test_is_user_answered_question_db(
-    session: Session,
-    question_create: QuestionCreate,
-    answer_create: AnswerCreate,
-    extra_question_create: QuestionCreate,
-) -> None:
-    question = crud.create_question_db(session, question_create)
-    extra_question = crud.create_question_db(session, extra_question_create)
-    answer = crud.create_answer_db(session, answer_create, question)
-
-    is_answered = crud.is_user_answered_question_db(
-        session, answer.user_id, question.id
-    )
-    assert is_answered
-
-    is_answered = crud.is_user_answered_question_db(
-        session, answer.user_id, extra_question.id
-    )
-    assert not is_answered
+# def test_is_user_answered_question_db(
+#     session: Session,
+#     question_create: QuestionCreate,
+#     answer_create: AnswerCreate,
+#     extra_question_create: QuestionCreate,
+# ) -> None:
+#     question = crud.create_question_db(session, question_create)
+#     extra_question = crud.create_question_db(session, extra_question_create)
+#     answer = crud.create_answer_db(session, answer_create, question)
+#
+#     is_answered = crud.is_user_answered_question_db(
+#         session, answer.user_id, question.id
+#     )
+#     assert is_answered
+#
+#     is_answered = crud.is_user_answered_question_db(
+#         session, answer.user_id, extra_question.id
+#     )
+#     assert not is_answered
 
 
 # Test crud from app.deps.py

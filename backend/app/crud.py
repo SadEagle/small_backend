@@ -48,23 +48,23 @@ def get_question_with_answers_db(
     return tuple(answers_tuple)
 
 
-def is_user_answered_question_db(
-    session: Session, user_id: str, question_id: int
-) -> bool:
-    """Check if user already answered certain question
-
-    Args:
-        session: orm session
-        user_id: user id
-        question_id: question id
-
-    Returns:
-        True - if user already answered, False otherwise
-    """
-    statement = (
-        select(AnswerDB)
-        .where(AnswerDB.question_id == question_id)
-        .where(AnswerDB.user_id == user_id)
-    )
-    current_user_answer = session.scalar(statement)
-    return current_user_answer is not None
+# def is_user_answered_question_db(
+#     session: Session, user_id: str, question_id: int
+# ) -> bool:
+#     """Check if user already answered certain question
+#
+#     Args:
+#         session: orm session
+#         user_id: user id
+#         question_id: question id
+#
+#     Returns:
+#         True - if user already answered, False otherwise
+#     """
+#     statement = (
+#         select(AnswerDB)
+#         .where(AnswerDB.question_id == question_id)
+#         .where(AnswerDB.user_id == user_id)
+#     )
+#     current_user_answer = session.scalar(statement)
+#     return current_user_answer is not None

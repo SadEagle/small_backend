@@ -58,12 +58,12 @@ def create_answer(
     target_question: CurrentQuestionDep,
     answer_create: AnswerCreate,
 ) -> Message:
-    if crud.is_user_answered_question_db(
-        session, answer_create.user_id, target_question.id
-    ):
-        raise HTTPException(
-            status_code=status.HTTP_404_NOT_FOUND,
-            detail="Can't create answer. User already answered current question",
-        )
+    # if crud.is_user_answered_question_db(
+    #     session, answer_create.user_id, target_question.id
+    # ):
+    #     raise HTTPException(
+    #         status_code=status.HTTP_404_NOT_FOUND,
+    #         detail="Can't create answer. User already answered current question",
+    #     )
     crud.create_answer_db(session, answer_create, target_question)
     return Message(message="Answer was succesfully created")
