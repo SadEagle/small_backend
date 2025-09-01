@@ -1,25 +1,17 @@
 services:
   backend:
-    develop:
-      watch:
-        - action: sync
-          path: ./backend/app/
-          target: /backend/app/
-        - action: sync
-          path: ./backend/alembic/
-          target: /backend/alembic/
-        - action: sync
-          path: ./backend/alembic.ini
-          target: /backend/alembic.ini
-        - action: rebuild
-          path: ./backend/pyproject.toml/
+    volumes:
+      - ./backend/:/backend
 
     command:
       [
         "uv",
         "run",
-        "fastapi",
-        "run",
-        "--port 0.0.0.0:8000",
-        "./app/main.py"
+        "uvicorn",
+        "--host",
+        "0.0.0.0",
+        "--port",
+        "8000",
+        "app.main:app",
+        "--reload"
       ]

@@ -10,10 +10,12 @@ WORKDIR /backend
 ENV UV_COMPILE_BYTECODE=1
 
 COPY ./uv.lock ./pyproject.toml ./
-RUN uv sync --locked
+
+RUN uv sync --frozen
 
 COPY ./app ./app
+COPY ./alembic.ini  ./alembic ./
+
+CMD ["uv", "run", "fastapi", "run", "--workers", "4", "./app/main.py"]
 
 EXPOSE 8000
-
-CMD ["uv", "run", "fastapi", "run", "./app/main.py"]

@@ -18,3 +18,6 @@ docker compose up
 ```
 
 Запуск тестов:
+```
+uv run pytest
+```

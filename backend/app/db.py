@@ -1,15 +1,10 @@
-import os
-
 from sqlalchemy import Engine, create_engine
 from sqlalchemy.orm import Session
 
 from app.model_db import Base
 from app.config import settings
 
-if os.getenv("PYTEST_VERSION"):
-    engine = create_engine(settings.TEST_DB_URL)
-else:
-    engine = create_engine(str(settings.DB_URL))
+engine = create_engine(str(settings.DB_URL))
 
 
 # TODO: add alembic migrations properly
