@@ -18,14 +18,14 @@
 docker compose up
 ``` 
 
-Пользоваться API можно только после использования скрипта alembic
+Для работы с API необходимо запустить alembic скрипт
 
-- Создание таблиц с alemblic:
+- Инициализация ьазы данных с alembic:
 ```
-docker exec -it *название_контейнера* uv run alembic upgrade head 
+docker exec -it *название_backend_контейнера* uv run alembic upgrade head 
 ```
 
 - Запуск тестов pytest:
 ```
-docker exec -it *название_контейнера*  uv run pytest
+docker exec -it *название_backend_контейнера*  uv run pytest
 ```
