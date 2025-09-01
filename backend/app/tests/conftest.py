@@ -19,6 +19,7 @@ def random_lower_string() -> str:
 
 @pytest.fixture(scope="session", autouse=True)
 def session() -> Generator[Session]:
+    Base.metadata.create_all(engine)
     with Session(engine) as session:
         yield session
     Base.metadata.drop_all(engine)

@@ -1,6 +1,6 @@
 services:
   backend:
-    # restart: unless-stopped
+    restart: unless-stopped
     build: ./backend/
     image: small-back:latest
     env_file:

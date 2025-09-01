@@ -6,19 +6,26 @@
 - [x] FastAPI
 - [x] SQLAlchemy ORM + Pydantic
 - [x] Pytest
-- [ ] Alembic migrations
+- [x] Alembic migrations
+- [x] Docker/Compose
 - [ ] Logs
-- [ ] Docker/Compose
+- [ ] Async
 
 # Запуск
 
-Запуск программы
+## Запуск программы:
 ```
 docker compose up
+``` 
+
+Пользоваться API можно только после использования скрипта alembic
+
+- Создание таблиц с alemblic:
+```
+docker exec -it *название_контейнера* uv run alembic upgrade head 
 ```
 
-Запуск тестов:
+- Запуск тестов pytest:
 ```
-uv run pytest
+docker exec -it *название_контейнера*  uv run pytest
 ```
-В настоящий момент запуск идет специфично т.к. создается пустой ./test.db файл в месте запуска и в нем прогоняются сами тесты
