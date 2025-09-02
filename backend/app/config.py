@@ -16,8 +16,8 @@ class Settings(BaseSettings):
     @computed_field
     @property
     def DB_URL(self) -> PostgresDsn | str:
-        # if os.getenv("PYTEST_VERSION"):
-        #     return "sqlite:///./test.db"
+        if os.getenv("PYTEST_VERSION"):
+            return "sqlite:///./test.db"
         return PostgresDsn.build(
             scheme="postgresql+psycopg2",
             username=self.POSTGRES_USER,
