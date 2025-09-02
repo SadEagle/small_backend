@@ -17,10 +17,12 @@ services:
     image: docker.io/library/postgres:17.6-alpine3.22
     restart: always
     shm_size: 128mb
-    volumes:
-      - small-db-volume:/var/lib/postgresql
     env_file:
       - ./.env
+    environment:
+      - PGDATA=/var/lib/postgresql/data/pgdata
+    volumes:
+      - small-db-volume:/var/lib/postgresql/data/pgdata
     networks:
       - small-db-network
     healthcheck:

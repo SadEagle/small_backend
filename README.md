@@ -20,7 +20,7 @@ docker compose up
 
 Для работы с API необходимо запустить alembic скрипт
 
-- Инициализация Базы данных с alembic:
+- Инициализация базы данных с alembic:
 ```
 docker exec *название_backend_контейнера* uv run alembic upgrade head 
 ```
