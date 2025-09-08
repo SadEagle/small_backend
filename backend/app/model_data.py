@@ -38,4 +38,5 @@ class Message(BaseModel):
 
 # Need if TypeAdapter was defined before inner classes
 # Ref: https://docs.pydantic.dev/2.11/errors/usage_errors/#class-not-fully-defined
+TupleQuestions.rebuild()
 TupleAnswers.rebuild()
