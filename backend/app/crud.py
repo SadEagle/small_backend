@@ -8,7 +8,8 @@ from app.model_data import AnswerCreate, QuestionCreate
 async def create_question_db(
     session: AsyncSession, question_create: QuestionCreate
 ) -> QuestionDB:
-    question = QuestionDB(**question_create.model_dump(mode="json"))
+    question_dict = question_create.model_dump(mode="json")
+    question = QuestionDB(**question_dict)
     session.add(question)
     await session.commit()
     await session.refresh(question)
@@ -25,7 +26,7 @@ async def create_answer_db(
 ) -> AnswerDB:
     answer_dict = answer_create.model_dump(mode="json")
     answer = AnswerDB(**answer_dict)
-    target_question.answers.append(answer)
+    (await target_question.awaitable_attrs.answers).append(answer)
     await session.commit()
     await session.refresh(answer)
     return answer
