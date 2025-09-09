@@ -1,55 +1,57 @@
 from sqlalchemy import select
-from sqlalchemy.orm import Session
+from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.model_db import AnswerDB, QuestionDB
 from app.model_data import AnswerCreate, QuestionCreate
 
 
-def create_question_db(session: Session, question_create: QuestionCreate) -> QuestionDB:
+async def create_question_db(
+    session: AsyncSession, question_create: QuestionCreate
+) -> QuestionDB:
     question = QuestionDB(**question_create.model_dump(mode="json"))
     session.add(question)
-    session.commit()
-    session.refresh(question)
+    await session.commit()
+    await session.refresh(question)
     return question
 
 
-def delete_question_db(session: Session, question: QuestionDB) -> None:
-    session.delete(question)
-    session.commit()
+async def delete_question_db(session: AsyncSession, question: QuestionDB) -> None:
+    await session.delete(question)
+    await session.commit()
 
 
-def create_answer_db(
-    session: Session, answer_create: AnswerCreate, target_question: QuestionDB
+async def create_answer_db(
+    session: AsyncSession, answer_create: AnswerCreate, target_question: QuestionDB
 ) -> AnswerDB:
     answer_dict = answer_create.model_dump(mode="json")
     answer = AnswerDB(**answer_dict)
     target_question.answers.append(answer)
-    session.commit()
-    session.refresh(answer)
+    await session.commit()
+    await session.refresh(answer)
     return answer
 
 
-def delete_answer_db(session: Session, answer: AnswerDB) -> None:
-    session.delete(answer)
-    session.commit()
+async def delete_answer_db(session: AsyncSession, answer: AnswerDB) -> None:
+    await session.delete(answer)
+    await session.commit()
 
 
-def get_all_questions_db(session: Session) -> tuple[QuestionDB, ...]:
+async def get_all_questions_db(session: AsyncSession) -> tuple[QuestionDB, ...]:
     statement = select(QuestionDB)
-    questions_tuple = session.scalars(statement).all()
+    questions_tuple = (await session.scalars(statement)).all()
     return tuple(questions_tuple)
 
 
-def get_question_with_answers_db(
-    session: Session, question_id: int
+async def get_question_with_answers_db(
+    session: AsyncSession, question_id: int
 ) -> tuple[AnswerDB, ...]:
     statement = select(AnswerDB).where(AnswerDB.question_id == question_id)
-    answers_tuple = session.scalars(statement).all()
+    answers_tuple = (await session.scalars(statement)).all()
     return tuple(answers_tuple)
 
 
-def is_user_answered_question_db(
-    session: Session, user_id: str, question_id: int
+async def is_user_answered_question_db(
+    session: AsyncSession, user_id: str, question_id: int
 ) -> bool:
     """Check if user already answered certain question
 
@@ -66,5 +68,5 @@ def is_user_answered_question_db(
         .where(AnswerDB.question_id == question_id)
         .where(AnswerDB.user_id == user_id)
     )
-    current_user_answer = session.scalar(statement)
+    current_user_answer = await session.scalar(statement)
     return current_user_answer is not None

@@ -4,14 +4,15 @@ services:
       - ./backend/:/backend
 
     command:
-      [
-        "uv",
-        "run",
-        "uvicorn",
-        "--host",
-        "0.0.0.0",
-        "--port",
-        "8000",
-        "app.main:app",
-        "--reload"
-      ]
+      [ "tail", "-F", "/dev/null" ]
+      # [
+      #   "uv",
+      #   "run",
+      #   "uvicorn",
+      #   "--host",
+      #   "0.0.0.0",
+      #   "--port",
+      #   "8000",
+      #   "app.main:app",
+      #   "--reload"
+      # ]

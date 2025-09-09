@@ -4,8 +4,6 @@ FROM docker.io/library/python:3.13.7-alpine3.22
 # Ref: https://docs.astral.sh/uv/guides/integration/docker/#installing-uv
 COPY --from=ghcr.io/astral-sh/uv:latest /uv /uvx /bin/
 
-RUN apk add --no-cache curl && \
-  curl -I https://pypi.org/ || echo "Network test failed"
 WORKDIR /backend
 ENV PYTHONPATH=./
 

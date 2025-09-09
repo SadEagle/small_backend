@@ -18,8 +18,8 @@
             fastapi
             fastapi-cli
             sqlalchemy
-            sqlite
             psycopg2
+            asyncpg
             pytest
             httpx
             bcrypt

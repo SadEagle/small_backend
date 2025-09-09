@@ -8,11 +8,13 @@ app_answers = APIRouter(prefix="/answers")
 
 
 @app_answers.get("/{answer_id}")
-def get_answer(current_answer: CurrentAnswerDep) -> Answer:
+async def get_answer(current_answer: CurrentAnswerDep) -> Answer:
     return Answer.model_validate(current_answer, from_attributes=True)
 
 
 @app_answers.delete("/{answer_id}")
-def delete_answer(session: SessionDep, current_answer: CurrentAnswerDep) -> Message:
-    crud.delete_answer_db(session, current_answer)
+async def delete_answer(
+    session: SessionDep, current_answer: CurrentAnswerDep
+) -> Message:
+    await crud.delete_answer_db(session, current_answer)
     return Message(message="Answer was successfully deleted")

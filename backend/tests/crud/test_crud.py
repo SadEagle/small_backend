@@ -24,6 +24,8 @@ def test_create_answer(
 
 def test_delete_question(session: Session, question_create: QuestionCreate) -> None:
     question = crud.create_question_db(session, question_create)
+    # TODO: check if better option and replace same way all other options
+    # assert question in session
     assert session.get(QuestionDB, question.id) is not None
 
     crud.delete_question_db(session, question)

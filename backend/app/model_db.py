@@ -2,11 +2,14 @@ from datetime import datetime
 
 from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column, relationship
 from sqlalchemy import MetaData, ForeignKey, func
+from sqlalchemy.ext.asyncio import AsyncAttrs
 
 
-# Alembic naming constraints convention
+# NOTE: Alembic naming constraints convention
 # Ref: https://alembic.sqlalchemy.org/en/latest/naming.html#integration-of-naming-conventions-into-operations-autogenerate
-class Base(DeclarativeBase):
+# NOTE: AsyncAttr prevention implicit IO
+# Ref: https://docs.sqlalchemy.org/en/20/orm/extensions/asyncio.html#preventing-implicit-io-when-using-asyncsession
+class Base(AsyncAttrs, DeclarativeBase):
     metadata = MetaData(
         naming_convention={
             "ix": "ix_%(column_0_label)s",
@@ -25,13 +28,14 @@ class QuestionDB(Base):
     text: Mapped[str]
     created_at: Mapped[datetime] = mapped_column(server_default=func.now())
     answers: Mapped[list["AnswerDB"]] = relationship(
-        back_populates="question", cascade="all, delete-orphan"
+        back_populates="question", cascade="save-update, delete"
     )
 
-    def __repr__(self) -> str:
-        return (
-            f"QuestionDB(id={self.id}, text='{self.text}', create_at={self.create_at})"
-        )
+    # NOTE: Potentially cant use because of AsyncAttr
+    # def __repr__(self) -> str:
+    #     return (
+    #         f"QuestionDB(id={self.id}, text='{self.text}', create_at={self.created_at})"
+    #     )
 
 
 class AnswerDB(Base):
@@ -45,5 +49,7 @@ class AnswerDB(Base):
     question_id: Mapped[int] = mapped_column(ForeignKey("question.id"))
     question: Mapped[QuestionDB] = relationship(back_populates="answers")
 
-    def __repr__(self) -> str:
-        return f"AnswerDB(id={self.id}, text='{self.text}', user_id='{self.user_id}', create_at={self.create_at}, question_id={self.question_id})"
+    # TODO: check, may i continue use __repr__
+    # NOTE: Potentially cant use because of AsyncAttr
+    # def __repr__(self) -> str:
+    #     return f"AnswerDB(id={self.id}, text='{self.text}', user_id='{self.user_id}', create_at={self.created_at}, question_id={self.question_id})"

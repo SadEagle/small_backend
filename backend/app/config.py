@@ -19,7 +19,7 @@ class Settings(BaseSettings):
         if os.getenv("PYTEST_VERSION"):
             return "sqlite:///./test.db"
         return PostgresDsn.build(
-            scheme="postgresql+psycopg2",
+            scheme="postgresql+asyncpg",
             username=self.POSTGRES_USER,
             password=self.POSTGRES_PASSWORD,
             host=self.POSTGRES_SERVER,
