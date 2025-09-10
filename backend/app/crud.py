@@ -12,7 +12,8 @@ async def create_question_db(
     question = QuestionDB(**question_dict)
     session.add(question)
     await session.commit()
-    await session.refresh(question)
+    # Skip loading answers relation
+    await session.refresh(question, ["id", "created_at"])
     return question
 
 
@@ -26,9 +27,11 @@ async def create_answer_db(
 ) -> AnswerDB:
     answer_dict = answer_create.model_dump(mode="json")
     answer = AnswerDB(**answer_dict)
-    (await target_question.awaitable_attrs.answers).append(answer)
+    answer.question = target_question
+
+    session.add(answer)
     await session.commit()
-    await session.refresh(answer)
+    await session.refresh(answer, ["id", "created_at"])
     return answer
 
 

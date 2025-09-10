@@ -49,7 +49,7 @@ class AnswerDB(Base):
     question_id: Mapped[int] = mapped_column(ForeignKey("question.id"))
     question: Mapped[QuestionDB] = relationship(back_populates="answers")
 
-    # TODO: check, may i continue use __repr__
+    # TODO: make __repr__ usable
     # NOTE: Potentially cant use because of AsyncAttr
     # def __repr__(self) -> str:
     #     return f"AnswerDB(id={self.id}, text='{self.text}', user_id='{self.user_id}', create_at={self.created_at}, question_id={self.question_id})"

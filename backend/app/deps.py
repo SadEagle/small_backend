@@ -8,7 +8,7 @@ from app.db import async_engine
 
 
 async def create_session() -> AsyncGenerator[AsyncSession]:
-    async with AsyncSession(async_engine) as async_session:
+    async with AsyncSession(async_engine, expire_on_commit=False) as async_session:
         yield async_session
 
 

@@ -1,4 +1,4 @@
-import os
+# import os
 
 from pydantic import computed_field, PostgresDsn
 from pydantic_settings import BaseSettings
@@ -11,13 +11,9 @@ class Settings(BaseSettings):
     POSTGRES_PASSWORD: str = ""
     POSTGRES_DB: str = ""
 
-    # TEST_DB_URL: str = "sqlite:///./test.db"
-
     @computed_field
     @property
     def DB_URL(self) -> PostgresDsn | str:
-        if os.getenv("PYTEST_VERSION"):
-            return "sqlite:///./test.db"
         return PostgresDsn.build(
             scheme="postgresql+asyncpg",
             username=self.POSTGRES_USER,

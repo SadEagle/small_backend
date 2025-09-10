@@ -8,8 +8,8 @@
 - [x] Pytest
 - [x] Alembic migrations
 - [x] Docker/Compose
+- [x] Async
 - [ ] Logs
-- [ ] Async
 
 # Запуск
 
