@@ -12,8 +12,7 @@ async def create_question_db(
     question = QuestionDB(**question_dict)
     session.add(question)
     await session.commit()
-    # Skip loading answers relation
-    await session.refresh(question, ["id", "created_at"])
+    await session.refresh(question)
     return question
 
 
@@ -31,7 +30,7 @@ async def create_answer_db(
 
     session.add(answer)
     await session.commit()
-    await session.refresh(answer, ["id", "created_at"])
+    await session.refresh(answer)
     return answer
 
 

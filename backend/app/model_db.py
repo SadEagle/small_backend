@@ -31,11 +31,10 @@ class QuestionDB(Base):
         back_populates="question", cascade="save-update, delete"
     )
 
-    # NOTE: Potentially cant use because of AsyncAttr
-    # def __repr__(self) -> str:
-    #     return (
-    #         f"QuestionDB(id={self.id}, text='{self.text}', create_at={self.created_at})"
-    #     )
+    def __repr__(self) -> str:
+        return (
+            f"QuestionDB(id={self.id}, text='{self.text}', create_at={self.created_at})"
+        )
 
 
 class AnswerDB(Base):
@@ -49,7 +48,5 @@ class AnswerDB(Base):
     question_id: Mapped[int] = mapped_column(ForeignKey("question.id"))
     question: Mapped[QuestionDB] = relationship(back_populates="answers")
 
-    # TODO: make __repr__ usable
-    # NOTE: Potentially cant use because of AsyncAttr
-    # def __repr__(self) -> str:
-    #     return f"AnswerDB(id={self.id}, text='{self.text}', user_id='{self.user_id}', create_at={self.created_at}, question_id={self.question_id})"
+    def __repr__(self) -> str:
+        return f"AnswerDB(id={self.id}, text='{self.text}', user_id='{self.user_id}', create_at={self.created_at}, question_id={self.question_id})"

@@ -1,31 +1,35 @@
-# Описание
+# About
 
-Данный проект представляет из себя пример бэкенда с использованием FastAPI.
+Current project is the realization of a small backend application.
 
-Реализованные составляющие проекта:
+The project contain current points:
 - [x] FastAPI
 - [x] SQLAlchemy ORM + Pydantic
 - [x] Pytest
 - [x] Alembic migrations
 - [x] Docker/Compose
 - [x] Async
-- [ ] Logs
+- [ ] CI/CD
 
-# Запуск
+Note, `flake.nix` and `flake.lock` are NixOS specific package manager files
 
-## Запуск программы:
+# Run
+For API usage it's essential to use alembic db initialization
+
+- Program run
 ```
 docker compose up
 ``` 
 
-Для работы с API необходимо запустить alembic скрипт
-
-- Инициализация базы данных с alembic:
+- DB initialization with alembic script:
 ```
-docker exec *название_backend_контейнера* uv run alembic upgrade head 
+docker exec *backend_container_name* uv run alembic upgrade head 
 ```
 
-- Запуск тестов pytest:
+- Pytest run
 ```
-docker exec *название_backend_контейнера*  uv run pytest
+docker exec *backend_container_name*  uv run pytest
 ```
+
+# Reference projects:
+- [full-stack-fastapi-template](https://github.com/fastapi/full-stack-fastapi-template)

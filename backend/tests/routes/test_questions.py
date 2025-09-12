@@ -1,5 +1,5 @@
 import pytest
-from fastapi import HTTPException, status
+from fastapi import status, HTTPException
 from httpx import AsyncClient
 from sqlalchemy.ext.asyncio import AsyncSession
 

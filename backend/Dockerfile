@@ -18,7 +18,7 @@ COPY ./app/ ./app/
 COPY ./tests/ ./tests/
 
 COPY ./alembic.ini ./
-COPY ./alembic/ ./alembic/
+COPY ./alembic_async/ ./alembic_async/
 
 CMD ["uv", "run", "fastapi", "run", "--workers", "4", "./app/main.py"]
 

@@ -7,5 +7,3 @@ from app.routes.answers import app_answers
 app = FastAPI()
 app.include_router(app_questions)
 app.include_router(app_answers)
-
-# TODO: add unexpected exception (500 - server error) handler logging

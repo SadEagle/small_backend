@@ -1,8 +1,8 @@
-"""Initiate db model
+"""Init db's
 
-Revision ID: a4a7a7fbf50d
+Revision ID: d1a325f0b79b
 Revises: 
-Create Date: 2025-09-01 21:40:36.063831
+Create Date: 2025-09-11 15:59:08.855930
 
 """
 from typing import Sequence, Union
@@ -12,7 +12,7 @@ import sqlalchemy as sa
 
 
 # revision identifiers, used by Alembic.
-revision: str = 'a4a7a7fbf50d'
+revision: str = 'd1a325f0b79b'
 down_revision: Union[str, Sequence[str], None] = None
 branch_labels: Union[str, Sequence[str], None] = None
 depends_on: Union[str, Sequence[str], None] = None
@@ -25,7 +25,7 @@ def upgrade() -> None:
     sa.Column('id', sa.Integer(), nullable=False),
     sa.Column('text', sa.String(), nullable=False),
     sa.Column('created_at', sa.DateTime(), server_default=sa.text('now()'), nullable=False),
-    sa.PrimaryKeyConstraint('id')
+    sa.PrimaryKeyConstraint('id', name=op.f('pk_question'))
     )
     op.create_table('answer',
     sa.Column('id', sa.Integer(), nullable=False),
@@ -33,8 +33,8 @@ def upgrade() -> None:
     sa.Column('user_id', sa.String(), nullable=False),
     sa.Column('created_at', sa.DateTime(), server_default=sa.text('now()'), nullable=False),
     sa.Column('question_id', sa.Integer(), nullable=False),
-    sa.ForeignKeyConstraint(['question_id'], ['question.id'], ),
-    sa.PrimaryKeyConstraint('id')
+    sa.ForeignKeyConstraint(['question_id'], ['question.id'], name=op.f('fk_answer_question_id_question')),
+    sa.PrimaryKeyConstraint('id', name=op.f('pk_answer'))
     )
     # ### end Alembic commands ###
 

@@ -8,6 +8,8 @@ from app.db import async_engine
 
 
 async def create_session() -> AsyncGenerator[AsyncSession]:
+    # WARN: async expects no expiration
+    # Ref: https://docs.sqlalchemy.org/en/20/orm/extensions/asyncio.html#preventing-implicit-io-when-using-asyncsession
     async with AsyncSession(async_engine, expire_on_commit=False) as async_session:
         yield async_session
 
