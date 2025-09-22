@@ -15,5 +15,6 @@ jobs:
       - name: Install uv deps
         run: uv sync --frozen
         working-directory: backend
-      - run: uv run ./scripts/lint.sh
+      - name: Run linter check
+        run: uv run ./scripts/lint.sh
         working-directory: backend
