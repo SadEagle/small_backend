@@ -9,7 +9,7 @@ The project contain current points:
 - [x] Alembic migrations
 - [x] Docker/Compose
 - [x] Async
-- [ ] CI/CD
+- [x] CI/CD
 
 Note, `flake.nix` and `flake.lock` are NixOS specific package manager files
 
@@ -29,6 +29,11 @@ docker exec *backend_container_name* uv run alembic upgrade head
 - Pytest run
 ```
 docker exec *backend_container_name*  uv run pytest
+```
+
+- Check code style:
+```
+uv run ./backend/scripts/lint.sh
 ```
 
 # Reference projects:

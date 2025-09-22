@@ -1,0 +1,4 @@
+services:
+  backend:
+    restart: no
+    command: [ "uv", "run", "pytest" ]

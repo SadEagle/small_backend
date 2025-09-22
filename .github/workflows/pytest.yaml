@@ -1,0 +1,27 @@
+on: 
+  push:
+  pull_request:
+      branches:
+        - master
+jobs:
+  pytest:
+    runs-on: ubuntu-latest
+    steps: 
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.13"
+      - name: Install uv
+        uses: astral-sh/setup-uv@v5
+      - run: docker compose down -v --remove-orphans
+      - name: Run test-db
+        run: docker compose up -d test-db
+      - name: Run backend tests with test-db
+        run: docker compose -f compose.yaml -f test.compose.yaml up backend --build --exit-code-from backend
+      - name: Delete test-db
+        run: docker compose down -v --remove-orphans
+        # NOTE: use `always()` for post error cleaning job
+        # Ref: https://docs.github.com/en/actions/reference/workflows-and-actions/expressions#status-check-functions
+        if: always()

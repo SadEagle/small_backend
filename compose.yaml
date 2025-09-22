@@ -8,7 +8,6 @@ services:
     environment:
       - POSTGRES_DEV_SERVER=dev-db
       - POSTGRES_TEST_SERVER=test-db
-      - LOG_PATH=/logs
     networks:
       - dev-db-network
       - test-db-network
@@ -73,11 +72,8 @@ services:
 volumes:
   dev-db-volume:
   test-db-volume:
-  backend-logs:
 
 
 networks:
   dev-db-network:
   test-db-network:
-
-

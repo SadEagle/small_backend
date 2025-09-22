@@ -1,5 +1,5 @@
 {
-  description = "web chat backend flake";
+  description = "Small backend application";
 
   inputs = {
     nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
@@ -18,7 +18,6 @@
             fastapi
             fastapi-cli
             sqlalchemy
-            psycopg2
             asyncpg
             pytest
             httpx
@@ -30,14 +29,6 @@
             pydantic-settings
           ]
         ));
-      backendApp = pkgs.stdenv.mkDerivation {
-        name = "web-chat-backend";
-        src = ./app;
-        installPhase = ''
-          mkdir -p $out/app
-          cp -r $src/* $out/app
-        '';
-      };
     in
     {
       shellHook = pkgs.mkShell {
@@ -48,27 +39,6 @@
 
       devShells.${system}.default = pkgs.mkShell {
         packages = [ pythonModule ];
-      };
-
-      packages.${system}.container = pkgs.dockerTools.buildImage {
-        name = "web-chat-backend";
-        tag = "latest";
-        copyToRoot = [
-          backendApp
-          pythonModule
-        ];
-        config = {
-          ExposedPorts = {
-            "8000/tcp" = { };
-          };
-          Cmd = [
-            "${pythonModule}/bin/fastapi"
-            "run"
-            "${backendApp}/app/main.py"
-            "--host"
-            "0.0.0.0"
-          ];
-        };
       };
     };
 }

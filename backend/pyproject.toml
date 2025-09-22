@@ -20,4 +20,9 @@ dev = [
     "anyio>=4.10.0",
     "httpx>=0.28.1",
     "pytest>=8.4.2",
+    "ruff>=0.13.1",
+    "ty>=0.0.1a21",
 ]
+
+[tool.ruff]
+exclude = ["alembic", ".venv"]
