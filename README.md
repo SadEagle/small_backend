@@ -31,10 +31,5 @@ docker exec *backend_container_name* uv run alembic upgrade head
 docker exec *backend_container_name*  uv run pytest
 ```
 
-- Check code style:
-```
-uv run ./backend/scripts/lint.sh
-```
-
 # Reference projects:
 - [full-stack-fastapi-template](https://github.com/fastapi/full-stack-fastapi-template)
